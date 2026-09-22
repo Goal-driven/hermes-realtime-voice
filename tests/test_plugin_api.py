@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from dashboard import plugin_api as voice
 
 MODULE = Path(voice.__file__)
+PLUGIN_MANIFEST = MODULE.parents[1] / "plugin.yaml"
 
 
 def test_qwen_url_is_restricted_to_alibaba_https():
@@ -53,6 +54,13 @@ def test_plugin_has_no_omarchy_or_openrouter_dependency():
     source = MODULE.read_text(encoding="utf-8").lower()
     assert "omarchy" not in source
     assert "openrouter" not in source
+
+
+def test_manifest_remains_compatible_with_hermes_v1_installers():
+    manifest = PLUGIN_MANIFEST.read_text(encoding="utf-8")
+    assert "manifest_version:" not in manifest
+    assert "api_version:" not in manifest
+    assert "name: hermes-realtime-voice" in manifest
 
 
 @pytest.mark.asyncio
