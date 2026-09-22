@@ -7,6 +7,7 @@ from dashboard import plugin_api as voice
 
 MODULE = Path(voice.__file__)
 PLUGIN_MANIFEST = MODULE.parents[1] / "plugin.yaml"
+PLUGIN_ENTRYPOINT = MODULE.parents[1] / "__init__.py"
 
 
 def test_qwen_url_is_restricted_to_alibaba_https():
@@ -61,6 +62,7 @@ def test_manifest_remains_compatible_with_hermes_v1_installers():
     assert "manifest_version:" not in manifest
     assert "api_version:" not in manifest
     assert "name: hermes-realtime-voice" in manifest
+    assert "def register(ctx)" in PLUGIN_ENTRYPOINT.read_text(encoding="utf-8")
 
 
 @pytest.mark.asyncio
