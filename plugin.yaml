@@ -1,0 +1,16 @@
+name: hermes-realtime-voice
+version: 0.1.0
+description: "Provider-neutral realtime voice transport for Hermes. Qwen handles ASR/TTS; the selected Hermes profile remains the only reasoning agent."
+author: Goal-driven
+manifest_version: 2
+api_version: 1
+license: MIT
+homepage: https://github.com/Goal-driven/hermes-realtime-voice
+tags: [voice, realtime, asr, tts, qwen]
+requires_env:
+  - name: DASHSCOPE_API_KEY
+    description: Alibaba Model Studio credential used only by the backend speech transport
+    secret: true
+  - name: HERMES_VOICE_QWEN_REALTIME_URL
+    description: HTTPS WebRTC endpoint for the Alibaba Model Studio workspace
+    secret: false

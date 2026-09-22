@@ -1,0 +1,13 @@
+{
+  "name": "hermes-realtime-voice",
+  "label": "Realtime Voice",
+  "description": "Duplex ASR and TTS transport for the active Hermes profile",
+  "icon": "Zap",
+  "version": "0.1.0",
+  "api": "plugin_api.py",
+  "tab": {
+    "path": "/realtime-voice",
+    "position": "after:sessions"
+  },
+  "entry": "dist/index.js"
+}

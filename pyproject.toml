@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-realtime-voice"
+version = "0.1.0"
+description = "Provider-neutral realtime voice plugin for Hermes"
+requires-python = ">=3.11"
+dependencies = ["aiohttp>=3.10", "fastapi>=0.115", "pydantic>=2.0"]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0", "pytest-asyncio>=0.24"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools]
+packages = ["dashboard"]
