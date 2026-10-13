@@ -73,4 +73,3 @@ def test_example_session_and_stream():
         with TestClient(app, base_url='http://127.0.0.1:8765') as other:
             other.get('/')
             assert other.get('/agent/runs/' + run['id'] + '/events').status_code == 404
-

@@ -93,3 +93,5 @@ The Desktop adapter uses the existing `prompt.submit` and session-scoped events.
 Repository code is MIT. Python requires 3.11+, aiohttp (Apache-2.0), FastAPI (MIT), Pydantic (MIT); the example adds Uvicorn (BSD-3-Clause). Test-only dependencies are pytest, pytest-asyncio and httpx (MIT). Packaging uses setuptools. The Desktop wrapper additionally requires the host's Hermes plugin SDK and React runtime; the standalone browser module does not. Model weights are not redistributed. Alibaba hosted API terms and usage charges apply separately.
 
 The Python wheel includes the browser module. `package.json` allows `npm pack`/local installation without downloading node_modules; no public registry publication is part of this change.
+
+The Desktop adapter source is `desktop/entry.js`. `npm ci --ignore-scripts && npm run build:desktop` bundles the shared controller into the existing single `desktop/plugin.js` entrypoint, keeping the runtime loader contract unchanged. CI verifies that generated output matches source. esbuild (MIT) is a build-only dependency.

@@ -4,6 +4,17 @@
   "type": "module",
   "license": "MIT",
   "exports": "./hermes_realtime_voice/browser/voice.js",
-  "files": ["hermes_realtime_voice/browser/voice.js", "LICENSE", "README.md", "docs"],
-  "scripts": {"test": "node --test tests/*.test.mjs"}
+  "files": [
+    "hermes_realtime_voice/browser/voice.js",
+    "LICENSE",
+    "README.md",
+    "docs"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "build:desktop": "esbuild desktop/entry.js --bundle --format=esm --target=es2022 --external:@hermes/plugin-sdk --external:react/jsx-runtime --outfile=desktop/plugin.js"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
 }

@@ -61,3 +61,5 @@ The owner explicitly fixed Qwen as the sole ASR/TTS provider. Language gaps are
 pending capabilities, not permission to add a second provider. Hermes remains
 the sole brain and orchestrator, and memory remains behind Hermes. No production
 rollout is included. See INTEGRATION.md for the SDK adapter's narrower guarantees.
+
+The Desktop adapter source is `desktop/entry.js`. `npm ci --ignore-scripts && npm run build:desktop` bundles the shared controller into the existing single `desktop/plugin.js` entrypoint, keeping the runtime loader contract unchanged. CI verifies that generated output matches source. esbuild (MIT) is a build-only dependency.

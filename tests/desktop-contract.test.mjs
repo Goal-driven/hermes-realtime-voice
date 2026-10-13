@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 
-const source = readFileSync(new URL('../desktop/plugin.js', import.meta.url), 'utf8') + readFileSync(new URL('../hermes_realtime_voice/browser/voice.js', import.meta.url), 'utf8')
+const source = readFileSync(new URL('../desktop/entry.js', import.meta.url), 'utf8') + readFileSync(new URL('../hermes_realtime_voice/browser/voice.js', import.meta.url), 'utf8')
 
 test('routes the final transcript to the focused Hermes session', () => {
   assert.match(source, /host\.state\.focusedSessionId\.get\(\)/)
