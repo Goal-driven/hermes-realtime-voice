@@ -24,6 +24,7 @@ from pydantic import BaseModel, Field
 
 router = APIRouter()
 
+QWEN_REALTIME_MODEL = "qwen3.8-omni-flash-realtime"
 QWEN_TTS_MODEL = "qwen3-tts-flash-realtime"
 MAX_TEXT = 4000
 MAX_CHANNELS = 16
@@ -32,10 +33,12 @@ ID_RE = re.compile(r"[A-Za-z0-9:._-]{1,128}")
 
 
 class Offer(BaseModel):
+    language: str = Field(default="sv", pattern="^(sv|en|fr|es|ru)$")
     sdp: str = Field(min_length=3, max_length=100_000)
 
 
 class Speak(BaseModel):
+    language: str = Field(default="sv", pattern="^(sv|en|fr|es|ru)$")
     channel: str = Field(min_length=32, max_length=128)
     id: str = Field(min_length=1, max_length=128)
     text: str = Field(min_length=1, max_length=MAX_TEXT)
@@ -213,7 +216,10 @@ def _channel(token: str) -> VoiceChannel:
 
 
 @router.get("/status")
-async def status() -> dict[str, Any]:
+async def status(language: str = "sv") -> dict[str, Any]:
+    languages = {"sv": "Swedish", "en": "English", "fr": "French", "es": "Spanish", "ru": "Russian"}
+    if language not in languages:
+        raise HTTPException(422, "This language is pending verified Qwen TTS support")
     raw = _realtime_url()
     configured = bool(_key() and raw)
     if raw:
@@ -232,7 +238,7 @@ async def status() -> dict[str, Any]:
             "input_audio_format": "pcm",
             "output_audio_format": "pcm",
             "input_audio_transcription": {"model": "qwen3-asr-flash-realtime"},
-            "instructions": "Transcribe speech only. Never answer, decide, use tools, or add information.",
+            "instructions": f"Transcribe speech only. The selected language is {languages[language]}. Never answer, decide, use tools, or add information.",
             "turn_detection": {"type": "semantic_vad", "threshold": 0.5, "silence_duration_ms": 350},
             "tools": [], "temperature": 0.6, "max_tokens": 2048, "voice": "Tina",
         },
@@ -263,7 +269,7 @@ async def speech_session(offer: Offer) -> dict[str, str]:
     async with ClientSession(timeout=ClientTimeout(total=30)) as client:
         try:
             async with client.post(
-                _allowed_qwen_url(_realtime_url()), data=offer.sdp,
+                _allowed_qwen_url(_realtime_url()) + "?" + urlencode({"model": QWEN_REALTIME_MODEL}), data=offer.sdp,
                 headers={**_headers(), "Content-Type": "application/sdp"}, allow_redirects=False,
             ) as response:
                 answer = await response.text()

@@ -15,6 +15,24 @@ The first provider adapter uses Alibaba Model Studio Qwen:
 
 Qwen cannot answer the user or call tools. Unsolicited Qwen responses are cancelled. The plugin never sends the Hermes system prompt, tool schemas, hidden reasoning, Honcho state, or conversation history to the speech provider.
 
+## Reuse in another application
+
+Use the packaged browser controller and authenticated Python router described in
+[the integration guide](docs/INTEGRATION.md). A separate, runnable example lives
+in `examples/`. It can connect to a host's Hermes run API or run an explicit echo
+demo. The original Hermes plugin remains an adapter to the same browser module.
+
+**Fixed architecture:** Qwen is the only speech provider. Hermes owns reasoning,
+agent orchestration and session/memory policy. Packaging must not introduce a
+second brain, an additional speech provider, or hardcoded deployment identities.
+The existing deployment is not modified by installing/building this package.
+
+[Language status and verification](docs/VERIFICATION.md) distinguishes vendor
+support, isolated provider tests and microphone/speaker acceptance. French,
+Spanish and Russian have Qwen ASR/TTS support; Polish, Ukrainian and Arabic
+remain pending Qwen TTS support. Romanian is excluded. Swedish and English
+retain the existing Qwen path.
+
 ## Install
 
 ```bash
@@ -62,7 +80,7 @@ The desktop talks only to provider-neutral plugin routes:
 
 The desktop uses authenticated immediate long polling so remote Hermes backends work as well as local ones.
 
-A future Fireworks adapter must preserve the same public plugin contract. If its realtime wire protocol differs from Qwen's OpenAI-compatible events, the transport adapter will translate that protocol while Hermes, its profile and Honcho remain unchanged. It will be enabled only after the required realtime ASR/TTS model is actually offered there and passes the same duplex, function-preservation, privacy, and latency gates. No Fireworks credential or speculative model ID is present today.
+Qwen remains the sole speech provider. Additional language coverage is gated on verified Qwen ASR and TTS support; provider replacement is outside this package change.
 
 ## Latency targets
 
@@ -77,7 +95,7 @@ Provider preconnect happens at activation. Hermes text is spoken at sentence bou
 ```bash
 python3 -m pip install -e '.[test]'
 python3 -m pytest -q
-node --test tests/desktop-contract.test.mjs
+node --test tests/*.test.mjs
 node --check desktop/plugin.js
 python3 -m py_compile dashboard/plugin_api.py
 ```

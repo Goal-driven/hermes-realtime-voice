@@ -1,0 +1,6 @@
+include __init__.py plugin.yaml package.json SECURITY.md
+recursive-include docs *.md
+recursive-include examples *.py *.js *.html
+recursive-include desktop *.js
+recursive-include dashboard *.json *.js
+recursive-include tests *.mjs

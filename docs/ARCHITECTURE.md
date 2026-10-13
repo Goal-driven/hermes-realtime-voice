@@ -33,7 +33,7 @@ The Python backend keeps provider credentials, creates WebRTC sessions and maint
 
 The desktop depends on the neutral `/status`, `/session`, `/channel`, `/tts/*` and `/events/poll` contract. It consumes speech events through authenticated immediate long polling because Hermes disables plugin WebSockets on some OAuth remote connections. `/status` supplies the provider-specific realtime session update, so the desktop does not hardcode a model identifier or endpoint. The first adapter uses Qwen's OpenAI-compatible realtime event vocabulary. A provider with a different wire protocol must translate events in its transport adapter while preserving this public contract.
 
-The Qwen adapter is the first implementation. A Fireworks adapter can replace it behind the same public contract once Fireworks exposes a compatible realtime speech model. A provider switch must pass:
+Qwen is the sole speech provider. Packaging and language extensions must pass:
 
 - transcription-only input behavior;
 - exact-text-only TTS behavior;
@@ -47,3 +47,17 @@ The Qwen adapter is the first implementation. A Fireworks adapter can replace it
 ## Omarchy
 
 Omarchy may install this plugin and select `omarchyvoicecandidate`. Other Hermes users install the same repository and use another profile. The plugin contains no Omarchy host name, API key, session ID or profile name.
+
+## Reusable module boundary (2026-10-13)
+
+`hermes_realtime_voice/browser/voice.js` is extracted from the existing Desktop
+controller; `desktop/plugin.js` is now its host adapter. The Python package
+mounts the existing `dashboard.plugin_api` transport with host authentication
+and per-principal channel ownership. The standalone example injects a durable
+Hermes run adapter. It does not share deployment credentials, profiles or memory
+identities with Omarchy.
+
+The owner explicitly fixed Qwen as the sole ASR/TTS provider. Language gaps are
+pending capabilities, not permission to add a second provider. Hermes remains
+the sole brain and orchestrator, and memory remains behind Hermes. No production
+rollout is included. See INTEGRATION.md for the SDK adapter's narrower guarantees.

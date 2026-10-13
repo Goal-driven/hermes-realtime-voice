@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<title>Voice module integration example</title>
+<body><main><h1>Voice module integration example</h1>
+<p>Connects your microphone to the configured speech service. The voices are AI-generated. Without a configured agent, the example only echoes your words; it does not run an agent.</p>
+<label>Conversation language <select id="language">
+<option value="sv">Svenska — existing path, TTS not vendor-listed</option>
+<option value="en">English</option><option value="fr">Français</option>
+<option value="es">Español</option><option value="ru">Русский</option>
+<option value="pl" disabled>Polski — pending Qwen TTS support</option>
+<option value="uk" disabled>Українська — pending Qwen TTS support</option>
+<option value="ar" disabled>العربية — pending Qwen TTS support</option>
+</select></label>
+<p><button id="start">Start / toggle voice</button> <button id="stop">Stop</button></p>
+<p id="status" role="status">Ready</p><p id="transcript" dir="auto"></p>
+<p>Browser scheduling measurement (not an acoustic latency test):</p><pre id="metric"></pre>
+</main><script type="module" src="/example.js"></script></body></html>

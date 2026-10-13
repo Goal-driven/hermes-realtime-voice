@@ -4,16 +4,21 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hermes-realtime-voice"
-version = "0.1.0"
+version = "0.2.0"
 description = "Provider-neutral realtime voice plugin for Hermes"
 requires-python = ">=3.11"
 dependencies = ["aiohttp>=3.10", "fastapi>=0.115", "pydantic>=2.0"]
 
 [project.optional-dependencies]
-test = ["pytest>=8.0", "pytest-asyncio>=0.24"]
+test = ["pytest>=8.0", "pytest-asyncio>=0.24", "httpx>=0.27"]
+example = ["uvicorn>=0.30"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
 [tool.setuptools]
-packages = ["dashboard"]
+include-package-data = false
+packages = ["dashboard", "hermes_realtime_voice", "hermes_realtime_voice.browser"]
+
+[tool.setuptools.package-data]
+hermes_realtime_voice = ["browser/*.js"]

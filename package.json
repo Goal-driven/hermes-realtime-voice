@@ -1,0 +1,9 @@
+{
+  "name": "@goal-driven/hermes-realtime-voice",
+  "version": "0.2.0",
+  "type": "module",
+  "license": "MIT",
+  "exports": "./hermes_realtime_voice/browser/voice.js",
+  "files": ["hermes_realtime_voice/browser/voice.js", "LICENSE", "README.md", "docs"],
+  "scripts": {"test": "node --test tests/*.test.mjs"}
+}
